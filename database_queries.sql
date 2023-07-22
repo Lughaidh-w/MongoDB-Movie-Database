@@ -1,13 +1,7 @@
+-- 1.
+-- Creating the tables.
 
-
-
-
-
-
-# 1.
-# Creating the tables.
-
-# First creating the database.
+-- First creating the database.
 DROP DATABASE IF EXISTS ireflix;
 CREATE DATABASE IF NOT EXISTS ireflix;
 USE ireflix;
@@ -77,47 +71,19 @@ genre VARCHAR(20)
 );
 
 
-
-# 2.
-# Populating the tables.
-# Datasets are hosted on github.
-
-
-
-
-
-
-# 3.
-# Creating relationships between the tables.
-
-
-
-
-
-# 4.
-# Adding movie/series year to the database.
+-- 2.
+-- Adding movie/series year to the database.
 CREATE TABLE year_data (
 id INT,
 year INT
 );
 
-# upload the data
-
-# Will use two different methods complete this; INSERT and JOIN
-SELECT * FROM movies
-LEFT JOIN year_data ON movies.id = year_data.id;
-
-
-SELECT * FROM series
-LEFT JOIN year_data ON series.id = year_data.id;
 
 
 
 
-
-
-# 5.
-# Famous actor that is a protagonist in several movies.
+-- 5.
+-- Famous actor that is a protagonist in several movies.
 SELECT DISTINCT actor_surname FROM movies 
 HAVING COUNT(actor_surname) > 4
 ORDER BY COUNT(actor_surname) DESC;
@@ -125,11 +91,8 @@ ORDER BY COUNT(actor_surname) DESC;
 
 
 
-# 6
-# List actors that were protagonists in movies but not series.
+-- 6
+-- List actors that were protagonists in movies but not series.
 SELECT DISTINCT * FROM movies 
 WHERE actor_surname NOT IN 
 (SELECT actor_surname FROM series);
-
-
-
