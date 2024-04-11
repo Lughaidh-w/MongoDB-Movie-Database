@@ -1,3 +1,4 @@
 # SQL Movie Database
 
-This project uses python to get data from an API and creates an SQL database of the data.
+This project gets movie data with web scrapping and using APIs.
+The data is then loaded into SQL.
