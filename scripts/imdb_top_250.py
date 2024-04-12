@@ -1,5 +1,4 @@
 import requests
-#import os
 import json
 from bs4 import BeautifulSoup
 import re
@@ -17,6 +16,7 @@ def write_data(movie_list):
 
 # IMDb Top 250 page
 url = "https://www.imdb.com/chart/top/"
+list_name = "top_250"
 
 header = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36"}
 
@@ -33,12 +33,14 @@ if response.status_code == 200:
             number, title = value.split('. ', 1)
 
             movie_data = {
-                        "number": number,
-                        "title": title,
-                        "year": list_str[index+1],
-                        "rating": list_str[index+4],
-                        "votes": list_str[index+6]
-                    }
+                "_id": f"{list_name}: {number}",
+                "title": title,    
+                "details": {
+                    "year": list_str[index+1],
+                    "rating": list_str[index+4],
+                    "votes": list_str[index+6]
+                }
+            }
             data.append(movie_data)
 
     # run the function
