@@ -6,6 +6,7 @@ import re
 json_path = "../input/top250imdb.json"
 data = []
 
+
 def write_data(movie_list):
     with open(json_path, "a+") as json_file:
         json.dump(movie_list, json_file, indent=4)
@@ -50,9 +51,6 @@ if response.status_code == 200:
 
 else:
     print("Error:", response.status_code)
-
-
-
 
 
 
