@@ -3,11 +3,9 @@ services:
     image: mongo/imdb-db
     container_name: mongo-imdb-db
     ports:
-      - "$MONGO_PORT:$MONGO_PORT"
+      - "${MONGO_PORT}:${MONGO_PORT}"
     volumes:
-      - ./mongodb:${MONGO_DIR}
-      - ./input:${MONGO_DIR}/input
+      - ./data/mongodb:${MONGO_DIR}/input
+    environment:
+      MONGO_DIR: ${MONGO_DIR}
     working_dir: ${MONGO_DIR}
-
-
-

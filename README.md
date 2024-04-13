@@ -1,4 +1,6 @@
 # SQL Movie Database
 
-This project gets movie data with web scrapping and using APIs.
-The data is then loaded into PostgreSQL.
+This project creatres movie data with web scraping in Python.
+
+Next a Docker image is created with MongoDB, the data is loaded into a database on creation.
+

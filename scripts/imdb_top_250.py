@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 import re
 
-json_path = "../input/top250imdb.json"
+json_path = "../data/mongodb/imdb-data/imdb-lists/top250imdb.json"
 data = []
 
 
