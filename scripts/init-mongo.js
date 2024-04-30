@@ -1,4 +1,8 @@
 // right now doesn't check if file is json or not
+console.log("Script start")
+
+// disable reporting
+disableTelemetry()
 
 const fs = require('fs');
 const path = require('path');
@@ -6,81 +10,54 @@ const path = require('path');
 const dataPath = "/home/mongodb/input"
 
 
-const mongodbDocument = {
-  jsonList : [],
+const collectionDocumentParser = {
+  collectionFileList : [],
 
-  newDocuments: function(collectionName, collPath, dbObject){
+  recordCollections: function(collectionFiles){
+    this.collectionFileList=collectionFiles;
+    console.log("collectionFileList:")
+    console.log(this.collectionFileList)
 
-      this.jsonList = fs.readdirSync(collPath);
+    this.collectionFileList.forEach(collection => {
+      const collectionName = collection.replace('.json', '');
+      dbObject = db.getSiblingDB(databaseName);
+      dbObject.createCollection(collectionName);
+      this.collectionFile = dataPath + "/" + databaseName + "/" + collection;
 
-      console.log("jsonList")
-      console.log(this.jsonList)
 
 
+      this.fileContents = fs.readFileSync(this.collectionFile, 'utf8');
+      this.jsonData = JSON.parse(this.fileContents);
 
-      this.jsonList.forEach(document => { 
-        this.documentPath = collPath + "/" + document;
-        console.log("document path")
-        console.log(this.documentPath)
+      if (Array.isArray(this.jsonData)) {
+        // Iterate over each object in the array and insert it as a document
+        this.jsonData.forEach(obj => {
+            dbObject.getCollection(collectionName).insertOne(obj);
+        });
+      } else {
+          // If the JSON data is not an array, insert the entire data as a single document
+          dbObject.getCollection(collectionName).insertOne(this.jsonData);
+      }
 
-        this.fileContents = fs.readFileSync(this.documentPath, 'utf8');
-        this.jsonData = JSON.parse(this.fileContents);
-        dbObject.getCollection(collectionName).insertOne(this.jsonData)
-      }) 
-  }
-}
-// collection
-const mongodbCollection = {
-  dbPath : "",
-  collectionList: [],
-
-  newCollection: function(databaseName, dbObject){
-      //this.dbPath = databaseName;
-      this.dbPath = dataPath + "/" + databaseName;
-
-      // list all collections
-      this.collectionList = fs.readdirSync(this.dbPath);
-
-      // creates a collection for each directory
-      // should add error statement here
-        this.collectionList.forEach(collection => {  // need to add a check that they are json files
-        this.collPath = this.dbPath + "/" + collection; 
-        console.log("Collections path");
-        console.log(this.collPath);
-        //dbObject.createCollection(collection)
-        dbObject.createCollection(collection);
-        console.log("db:", dbObject);
-
-        
-
-        //collectionObject = db.collection(collection)
-        const addMongodbDocument = Object.create(mongodbDocument);
-        addMongodbDocument.newDocuments(collection, this.collPath, dbObject);
-      })
+    });
 
   }
+
+
+
 }
 
 
-// for now only using one database:
-// imdb-data
-const listDatabases = {
-    dirList : [],
+// only using one database for initial load
+console.log("Creating Database")
+const databaseName = "imdb-data"
+const dbObject = db.getSiblingDB(databaseName);
+//dbObject.createCollection("test_collection_for_creation_check");
 
-    searchDatabases: function(databases){
-        this.dirList=databases
-        this.dirList.forEach(database => {
-            // create database
-            const dbObject = db.getSiblingDB(database);
-            const newMongodbCollection = Object.create(mongodbCollection);
-            newMongodbCollection.newCollection(database, dbObject);
-        })
-    }
-}
+// Any file will be a collection
+const databaseFolder = dataPath + "/" + databaseName
 
-const databases = fs.readdirSync(dataPath);
-console.log("Databases")
-console.log(databases)
+const collectionFiles = fs.readdirSync(databaseFolder);
 
-const newListDatabases = Object.create(listDatabases);
-newListDatabases.searchDatabases(databases);
+const newCollectionDocumentParser = Object.create(collectionDocumentParser);
+newCollectionDocumentParser.recordCollections(collectionFiles)

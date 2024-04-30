@@ -1,6 +1,7 @@
 services:
   mongodb:
     image: mongo/imdb-db
+    restart: unless-stopped
     container_name: mongo-imdb-db
     ports:
       - "${MONGO_PORT}:${MONGO_PORT}"

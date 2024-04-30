@@ -3,7 +3,7 @@ import json
 from bs4 import BeautifulSoup
 import re
 
-json_path = "../data/mongodb/imdb-data/imdb-lists/top250imdb.json"
+json_path = "../data/mongodb/imdb-data/top250imdb.json"
 data = []
 
 
@@ -28,13 +28,14 @@ if response.status_code == 200:
     list_str = list(soup.stripped_strings)
     pattern = re.compile(r'^(\d+(\.\d+)?)\.\s.*$')
 
+    # index entry used for each for parsing
     for index, value in enumerate(list_str):
         if pattern.match(value):
             #print(value, list_str[index+1], list_str[index+4], list_str[index+6])
             number, title = value.split('. ', 1)
 
             movie_data = {
-                "_id": f"{list_name}: {number}",
+                "index": f"{list_name}: {number}",
                 "title": title,    
                 "details": {
                     "year": list_str[index+1],

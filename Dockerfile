@@ -6,6 +6,10 @@ From mongo
 # add nano
 #RUN apt-get update && apt-get install -y nano
 
+# install 
+RUN apt-get update && apt-get install -y nodejs npm
+
+#RUN npm install mongoose
 
 # add mongo-init file 
 COPY scripts/init-mongo.js /docker-entrypoint-initdb.d/
