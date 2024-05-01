@@ -14,7 +14,17 @@ The file is parsed and each JSON object is added as a document as below:
   details: { year: '1994', rating: '9.3', votes: '2.9M' }
 }
 ```
+A Schema is then made with Mongoose, which uses a method to add a list of actors from an [API](http://www.omdbapi.com/).
+This alters the Documents as below:
 
-Data is then transformed with node.js (mongoose) and loaded back into MongoDB.
-
+```
+{
+  _id: ObjectId('6632430c397b27ea257b2da9'),
+  index: 'top_250: 1',
+  title: 'The Shawshank Redemption',
+  details: { year: '1994', rating: '9.3', votes: '2.9M' },
+  __v: 1,
+  actors: [ 'Tim Robbins', 'Morgan Freeman', 'Bob Gunton' ]
+}
+```
 
