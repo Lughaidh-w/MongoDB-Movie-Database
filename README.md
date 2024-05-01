@@ -1,10 +1,10 @@
-# Movie Database
+# Movie Database Creation
 
 This project creatres movie data with web scraping in Python.
-The movie data is added to a single JSON file.
+The movie data is added to a single JSON file, containing the top 250 rated movies.
 
 
-MongoDB is used in a container, and a database created with Node.JS.
+A MongoDB database is created in a container using Node.JS.
 The file is parsed and each JSON object is added as a document as below:
 ```
 {
